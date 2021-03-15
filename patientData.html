@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+<title>Cadastro de Bolsas</title>
+{% endblock title %}
+
+{% block conteudo %}
+
+<h2>{{ PESQUISA }}</h2>
+
+ {% csrf_token%} 
+
+ <form  method="POST">
+    {% csrf_token %} 
+    <label for= "codpremed">Entre com a Prescricao: </label>
+    <input id="codpremed" type="number" name="codpremed" value="codpremed">
+    <label for= "codetique">Codigo da Etiqueta: </label>
+    <input id="codetique" type="number" name="codetique" value="codetique">            
+    <input type="submit"class="btn btn-primary" value="Buscar Dados">
+    <hr> 
+    {% if codpremed != None %}
+       <br><br>
+    <p>
+       <table id="dadosPaciente">
+       <thead id="theadPaciente">
+          <tr>
+              <th><h3>Codigo</h3></th>
+              <th><h3>Paciente</h3></th> 
+              <th><h3>Atendimento</h3></th>
+              <th><h3>Prescricao</h3></th>
+              <th><h3>Etiqueta</h3></th>
+          </tr>
+       </thead> 
+    <h3>Deseja realmente cadastrar esse paciente?</h3>
+    <p></p> 
+       <tbody>              
+          {% for i in dadosPaciente %}      
+          <tr>  
+              
+             <td><h5> {{ i.cd_atendimento.cd_paciente.cd_paciente }} </h5></td> 
+             <td><h5> {{ i.cd_atendimento.cd_paciente.nm_paciente }} </h5></td> 
+             <td><h5> {{ i.cd_atendimento.cd_atendimento }} </h5></td>              
+             <td><h5> {{ i.cd_pre_med }} </h5></td>                                                                           
+             <td><h5> {{ codetique }} </h5></td> 
+                
+          </tr>  
+         {% endfor %}        
+       </tbody>
+     </table>
+      
+    {% endif %} 
+</form>
+<form action = "{% url 'cadastrarPaciente' %}" method="POST">
+   
+  {% csrf_token%} 
+	
+  <input id="codpremed" type="hidden" name="codpremed" value="{{ codpremed }}">
+    
+  <input id="codetique" type="hidden" name="codetique" value="{{ codetique }}">     
+    
+<input name = 'Cadastrar' type = 'submit'>
+</form> 
+ 
+{% endblock conteudo %}
